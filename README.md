@@ -184,7 +184,7 @@ Para verificar el funcionamiento de la API, se recomienda utilizar herramientas 
 3.  **Copia el Token** de la respuesta.
 4.  **Otras peticiones**: En la pestaña *Authorization*, selecciona **Bearer Token** y pega el token copiado.
 
-### OPCIÓN 2: Hoppscotch (Web) - ¡Método Fácil! ✨
+### OPCIÓN 2: Hoppscotch (Web) - ¡Método Fácil!
 
 Hemos incluido una colección configurada para que no tengas que escribir nada.
 
