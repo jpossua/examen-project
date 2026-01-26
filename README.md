@@ -16,15 +16,26 @@ Esta aplicación implementa un backend robusto para un sistema educativo. Permit
 
 ### 1. Login y Obtención de Token
 Autenticación segura devolviendo token Bearer.
-![Login Postman](imgReadme/postman_login.png)
+![Login Page](imgReadme/login_screenshot.png)
 
 ### 2. Gestión de Perfil de Usuario
 Endpoint protegido donde el usuario modifica sus propios datos.
-![User Profile](imgReadme/postman_profile.png)
+![User Profile](imgReadme/profile_screenshot.png)
 
 ### 3. CRUD de Exámenes
-Operaciones completas de gestión académica.
-![CRUD Examen](imgReadme/postman_crud.png)
+Operaciones completas de gestión académica (Puede probarse con Postman o Hoppscotch).
+
+#### A. Listar Exámenes (GET)
+![Listar](imgReadme/crud_get_list.png)
+
+#### B. Crear Examen (POST)
+![Crear](imgReadme/crud_post_create.png)
+
+#### C. Actualizar Examen (PUT)
+![Actualizar](imgReadme/crud_put_update.png)
+
+#### D. Eliminar Examen (DELETE)
+![Eliminar](imgReadme/crud_delete.png)
 
 ---
 
@@ -44,6 +55,8 @@ api-cursos/
 │   │   │   │   ├── ExamenController.php    # CRUD Exámenes
 │   │   │   │   └── AsignaturaController.php# CRUD Asignaturas
 │   │   └── Middleware/            # Filtros de Seguridad (Sanctum)
+│   ├── Providers/
+│   │   └── AppServiceProvider.php # Configuración Global (Rate Limiter Fix)
 │   │
 │   └── Models/                    # ORM Eloquent
 │       ├── User.php               # Usuarios del sistema
@@ -54,9 +67,17 @@ api-cursos/
 ├── database/                      # Estructura de Datos
 │   ├── migrations/                # Definición de tablas
 │   └── seeders/                   # Datos de prueba
+│       ├── DatabaseSeeder.php     # Orquestador principal
+│       ├── UserSeeder.php         # Admin por defecto
+│       ├── AlumnoSeeder.php       # Datos falsos de Alumnos
+│       ├── ProfesorSeeder.php     # Datos falsos de Profesores
+│       └── AsignaturaSeeder.php   # Datos falsos de Asignaturas
 │
 ├── routes/
 │   └── api.php                    # Definición de Endpoints Seguros
+│
+├── hoppscotch_export/             # 🧪 Colección de Pruebas
+│   └── Prueba.json                # Archivo para importar en Hoppscotch
 │
 └── public/
     └── test_api.html              # Cliente web ligero para pruebas
@@ -78,8 +99,8 @@ api-cursos/
                │
                ▼
 ┌─────────────────────────────┐       ┌────────────────────────┐
-│    Middleware Sanctum       │ ◀──── │   Base de Datos        │
-│  (Verificación de Token)    │       │ (personal_access_tokens)│
+│   Middleware y Seguridad    │ ◀──── │   Base de Datos        │
+│ (Sanctum + Rate Limiter)    │       │ (personal_access_tokens)│
 └──────────────┬──────────────┘       └────────────────────────┘
                │
                ▼
@@ -116,7 +137,7 @@ Todos los datos entrantes son validados antes de procesarse para asegurar integr
 **Archivo:** `app/Http/Controllers/Api/ExamenController.php`
 ```php
 $validator = Validator::make($request->all(), [
-    'dia_examen' => 'required|date_format:Y-m-d H:i:s',
+    'dia_examen' => 'required|date_format:Y-m-d',
     'tema' => 'required|string|max:255',
     'nota' => 'nullable|numeric|min:0|max:10' // Validación de rango
 ]);
@@ -141,49 +162,49 @@ Uso de claves foráneas y restricciones en base de datos para evitar datos huér
 $table->foreignId('alumno_id')->constrained()->onDelete('cascade');
 ```
 
----
+### 5. Protección contra Fuerza Bruta (Rate Limiting)
+Limitación de peticiones por minuto para prevenir ataques de denegación de servicio (DoS). Implementado globalmente para la API.
+
+**Archivo:** `app/Providers/AppServiceProvider.php`
+```php
+RateLimiter::for('api', function (Request $request) {
+    return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+});
+```
 
 ---
 
 ## Guía de Pruebas
 
-Este proyecto incluye múltiples formas de verificar su funcionamiento sin necesidad de herramientas externas complejas.
+Para verificar el funcionamiento de la API, se recomienda utilizar herramientas estándar como **Postman** o **Hoppscotch**.
 
-### OPCIÓN A: Interfaz Web de Prueba (Recomendada)
-Hemos incluido un cliente web ligero para probar la API desde el navegador.
-
-1.  Asegúrate de que tu servidor esté corriendo (`php artisan serve` o Laragon).
-2.  Accede a: `http://api-cursos.test/test_api.html` (o `http://127.0.0.1:8000/test_api.html`).
-3.  Ingresa la URL Base (ej. `http://api-cursos.test/api`).
-4.  Realiza el **Login** y prueba la actualización de perfil.
-
-### OPCIÓN B: Script Automático (PowerShell)
-Si estás en Windows, puedes usar el script de validación incluido:
-
-```powershell
-./verify_api.ps1
-```
-Este script realizará automáticamente:
-1.  Login con el usuario admin.
-2.  Obtención del perfil.
-3.  Validación de endpoints.
-
-### OPCIÓN C: Postman
-Si prefieres usar Postman:
-1.  Importa la colección (si la hubiera) o crea una nueva Request.
-2.  **Login**: POST a `/api/login` con Body JSON `{"email": "...", "password": "..."}`.
+### OPCIÓN 1: Postman (Recomendada)
+1.  Importa la colección o crea una nueva Request.
+2.  **Login**: POST a `/api/login` con Body JSON `{"email": "admin@example.com", "password": "password123"}`.
 3.  **Copia el Token** de la respuesta.
-4.  **Otras peticiones**: En la pestaña *Authorization*, selecciona **Bearer Token** y pega el código.
+4.  **Otras peticiones**: En la pestaña *Authorization*, selecciona **Bearer Token** y pega el token copiado.
 
-### OPCIÓN D: Hoppscotch (Web Gratuita)
-Si no quieres instalar programas y prefieres una web (como Postman pero en el navegador):
+### OPCIÓN 2: Hoppscotch (Web) - ¡Método Fácil! ✨
+
+Hemos incluido una colección configurada para que no tengas que escribir nada.
+
+#### A. Importar (Rápido)
 1.  Ve a [Hoppscotch.io](https://hoppscotch.io/).
-2.  (Importante) Instala su extensión de navegador para poder conectar con `localhost`.
-3.  Funciona igual: Url, Método y Body JSON.
+2.  Instala la extensión del navegador (necesaria para `localhost`).
+3.  Clic en **Colecciones** (Icono carpeta) > **Importar** > **Desde archivo JSON**.
+4.  Selecciona el archivo: `hoppscotch_export/Prueba.json`.
+5.  ¡Listo! Ya tienes todas las peticiones (Login con `device_name`, Headers, CRUD...) configuradas.
+
+#### B. Manual
+Si prefieres hacerlo a mano, recuerda estos **3 puntos clave** para que no falle:
+1.  **Headers Obligatorios** (¡Pon los dos!):
+    *   `Content-Type: application/json`
+    *   `Accept: application/json`
+2.  **Campo Extra en Login**: Añade `"device_name": "mi_pc"` en el JSON.
+3.  **Token**: Copia el token del login y úsalo como `Bearer Token` en las demás peticiones.
+
 
 ---
-
-
 ### 1. Requisitos
 *   PHP 8.2 o superior.
 *   Composer.
@@ -216,13 +237,15 @@ Al ejecutar los seeders, se crea el siguiente usuario por defecto en `database/s
 
 ## Tecnologías Utilizadas
 
-| Tecnología  | Versión | Uso                      |
-| :---------- | :------ | :----------------------- |
-| **Laravel** | 11.x    | Framework Backend        |
-| **PHP**     | 8.2+    | Lenguaje del Servidor    |
-| **Sanctum** | Latest  | Autenticación de API     |
-| **MariaDB** | 10.x    | Base de Datos Relacional |
-| **Postman** | -       | Herramienta de Testing   |
+| Tecnología     | Versión | Uso                      |
+| :------------- | :------ | :----------------------- |
+| **Laravel**    | 11.x    | Framework Backend        |
+| **PHP**        | 8.2+    | Lenguaje del Servidor    |
+| **Sanctum**    | Latest  | Autenticación de API     |
+| **MariaDB**    | 10.x    | Base de Datos Relacional |
+| **phpMyAdmin** | -       | Gestión de Base de Datos |
+| **Postman**    | -       | Herramienta de Testing   |
+| **Hoppscotch** | -       | Herramienta de Testing   |
 
 ---
 

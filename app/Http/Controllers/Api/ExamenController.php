@@ -22,11 +22,11 @@ class ExamenController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dia_examen' => 'required|date_format:Y-m-d H:i:s',
+            'dia_examen' => 'required|date_format:Y-m-d',
             'tema' => 'required|string|max:255',
             'aprobado' => 'required|boolean',
             'alumno_id' => 'required|exists:alumnos,id',
-            'profesor_id' => 'required|exists:profesores,id',
+            'profesor_id' => 'required|exists:profesors,id',
             'asignatura_id' => 'required|exists:asignaturas,id',
             'nota' => 'nullable|numeric|min:0|max:10'
         ]);
@@ -79,7 +79,7 @@ class ExamenController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'dia_examen' => 'sometimes|required|date_format:Y-m-d H:i:s',
+            'dia_examen' => 'sometimes|required|date_format:Y-m-d',
             'tema' => 'sometimes|required|string|max:255',
             'aprobado' => 'sometimes|required|boolean',
             'alumno_id' => 'sometimes|required|exists:alumnos,id',
