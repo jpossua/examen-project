@@ -76,7 +76,7 @@ api-cursos/
 ├── routes/
 │   └── api.php                    # Definición de Endpoints Seguros
 │
-├── hoppscotch_export/             # 🧪 Colección de Pruebas
+├── hoppscotch_export/             # Colección de Pruebas
 │   └── Prueba.json                # Archivo para importar en Hoppscotch
 │
 └── public/
