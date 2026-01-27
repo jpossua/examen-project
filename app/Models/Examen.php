@@ -13,29 +13,15 @@ class Examen extends Model
         'dia_examen',
         'tema',
         'aprobado',
-        'alumno_id',
-        'profesor_id',
-        'asignatura_id',
         'nota',
+        'nombre_alumno',
+        'asignatura',
+        'duracion_minutos',
     ];
 
     protected $casts = [
         'dia_examen' => 'datetime',
         'aprobado' => 'boolean',
+        'nota' => 'decimal:2',
     ];
-
-    public function alumno()
-    {
-        return $this->belongsTo(Alumno::class);
-    }
-
-    public function profesor()
-    {
-        return $this->belongsTo(Profesor::class);
-    }
-
-    public function asignatura()
-    {
-        return $this->belongsTo(Asignatura::class);
-    }
 }

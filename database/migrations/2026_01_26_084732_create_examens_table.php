@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('tema');
             $table->boolean('aprobado')->default(false);
             $table->decimal('nota', 4, 2)->nullable();
-            $table->foreignId('alumno_id')->constrained()->onDelete('cascade');
-            $table->foreignId('profesor_id')->constrained()->onDelete('cascade');
-            $table->foreignId('asignatura_id')->constrained()->onDelete('cascade');
+            $table->string('nombre_alumno');
+            $table->string('asignatura');
+            $table->integer('duracion_minutos');
             $table->timestamps();
         });
     }

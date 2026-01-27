@@ -3,9 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\AlumnoController;
-use App\Http\Controllers\Api\ProfesorController;
-use App\Http\Controllers\Api\AsignaturaController;
+
 use App\Http\Controllers\Api\ExamenController;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -34,15 +32,6 @@ Route::middleware([
     EnsureFrontendRequestsAreStateful::class,
     'throttle:api',
 ])->group(function () {
-    // CRUD Alumnos
-    Route::apiResource('alumnos', AlumnoController::class);
-
-    // CRUD Profesores
-    Route::apiResource('profesores', ProfesorController::class);
-
-    // CRUD Asignaturas
-    Route::apiResource('asignaturas', AsignaturaController::class);
-
     // CRUD Exámenes
     Route::apiResource('examenes', ExamenController::class);
 });

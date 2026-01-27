@@ -12,7 +12,7 @@ class ExamenController extends Controller
 {
     public function index()
     {
-        $examenes = Examen::with(['alumno', 'profesor', 'asignatura'])->get();
+        $examenes = Examen::all();
         return response()->json([
             'status' => true,
             'data' => $examenes
@@ -22,12 +22,12 @@ class ExamenController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dia_examen' => 'required|date_format:Y-m-d',
+            'dia_examen' => 'required|date',
             'tema' => 'required|string|max:255',
             'aprobado' => 'required|boolean',
-            'alumno_id' => 'required|exists:alumnos,id',
-            'profesor_id' => 'required|exists:profesors,id',
-            'asignatura_id' => 'required|exists:asignaturas,id',
+            'nombre_alumno' => 'required|string|max:255',
+            'asignatura' => 'required|string|max:255',
+            'duracion_minutos' => 'required|integer|min:1',
             'nota' => 'nullable|numeric|min:0|max:10'
         ]);
 
@@ -40,9 +40,6 @@ class ExamenController extends Controller
 
         $examen = Examen::create($request->all());
 
-        // Cargar relaciones para la respuesta
-        $examen->load(['alumno', 'profesor', 'asignatura']);
-
         return response()->json([
             'status' => true,
             'message' => 'Examen creado exitosamente',
@@ -52,7 +49,7 @@ class ExamenController extends Controller
 
     public function show($id)
     {
-        $examen = Examen::with(['alumno', 'profesor', 'asignatura'])->find($id);
+        $examen = Examen::find($id);
 
         if (!$examen) {
             return response()->json([
@@ -79,12 +76,12 @@ class ExamenController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'dia_examen' => 'sometimes|required|date_format:Y-m-d',
+            'dia_examen' => 'sometimes|required|date',
             'tema' => 'sometimes|required|string|max:255',
             'aprobado' => 'sometimes|required|boolean',
-            'alumno_id' => 'sometimes|required|exists:alumnos,id',
-            'profesor_id' => 'sometimes|required|exists:profesores,id',
-            'asignatura_id' => 'sometimes|required|exists:asignaturas,id',
+            'nombre_alumno' => 'sometimes|required|string|max:255',
+            'asignatura' => 'sometimes|required|string|max:255',
+            'duracion_minutos' => 'sometimes|required|integer|min:1',
             'nota' => 'nullable|numeric|min:0|max:10'
         ]);
 
@@ -96,9 +93,6 @@ class ExamenController extends Controller
         }
 
         $examen->update($request->all());
-
-        // Cargar relaciones para la respuesta
-        $examen->load(['alumno', 'profesor', 'asignatura']);
 
         return response()->json([
             'status' => true,
@@ -123,46 +117,6 @@ class ExamenController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Examen eliminado exitosamente'
-        ]);
-    }
-
-    // Método adicional: Obtener exámenes por alumno
-    public function getExamenesPorAlumno($alumnoId)
-    {
-        $examenes = Examen::with(['profesor', 'asignatura'])
-            ->where('alumno_id', $alumnoId)
-            ->get();
-
-        if ($examenes->isEmpty()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No se encontraron exámenes para este alumno'
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'data' => $examenes
-        ]);
-    }
-
-    // Método adicional: Obtener exámenes por asignatura
-    public function getExamenesPorAsignatura($asignaturaId)
-    {
-        $examenes = Examen::with(['alumno', 'profesor'])
-            ->where('asignatura_id', $asignaturaId)
-            ->get();
-
-        if ($examenes->isEmpty()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No se encontraron exámenes para esta asignatura'
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => true,
-            'data' => $examenes
         ]);
     }
 }

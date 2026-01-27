@@ -1,248 +1,228 @@
-{
-  "v": 11,
-  "name": "Prueba",
-  "folders": [],
-  "requests": [
-    {
-      "v": "17",
-      "name": "login",
-      "method": "POST",
-      "endpoint": "http://127.0.0.1:8000/api/login",
-      "params": [
-        {
-          "key": "{\"email\": \"admin@example.com\", \"password\": \"password123\"}",
-          "value": "",
-          "active": true,
-          "description": ""
-        }
-      ],
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "",
-          "active": true,
-          "description": ""
-        }
-      ],
-      "preRequestScript": "",
-      "testScript": "",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "body": {
-        "contentType": "application/json",
-        "body": "{\"email\": \"admin@example.com\", \"password\": \"password123\"}"
-      },
-      "requestVariables": [],
-      "responses": {},
-      "description": null
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/user",
-      "name": "User",
-      "params": [],
-      "headers": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+[
+  {
+    "v": 11,
+    "name": "Prueba",
+    "folders": [],
+    "requests": [
+      {
+        "v": "17",
+        "name": "login",
+        "method": "POST",
+        "endpoint": "http://127.0.0.1:8000/api/login",
+        "params": [
+          {
+            "key": "{\"email\": \"admin@example.com\", \"password\": \"password123\"}",
+            "value": "",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "method": "GET",
-      "auth": {
-        "authType": "bearer",
-        "authActive": true,
-        "token": "1|BYFbQFC9DyRbNQiY9ixVFd4oucDbEd9tHsOSpOjCe4717b77"
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password123\",\n    \"device_name\": \"mi_pc\"\n}"
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/examenes/",
-      "name": "Examenes_Post",
-      "params": [],
-      "headers": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password123\",\n    \"device_name\": \"mi_pc\"\n}"
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "method": "POST",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n    \"tema\": \"Examen Final de Matemáticas\",\n    \"nota\": 8.5,\n    \"dia_examen\": \"2024-06-15\",\n    \"aprobado\": true,\n    \"alumno_id\": 1,\n    \"profesor_id\": 1,\n    \"asignatura_id\": 1\n}"
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/examenes",
-      "name": "Examenes_Put",
-      "params": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+      {
+        "v": "17",
+        "name": "User",
+        "method": "GET",
+        "endpoint": "http://127.0.0.1:8000/api/user",
+        "params": [],
+        "headers": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "bearer",
+          "token": "<TOKEN_AQUI>",
+          "authActive": true
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n    \"nota\": 9.5\n}"
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/examenes/1",
-      "name": "Examenes_Get",
-      "params": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password123\",\n    \"device_name\": \"mi_pc\"\n}"
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "headers": [],
-      "method": "PUT",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": "{\n    \"nota\": 9.5\n}"
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/examenes",
-      "name": "Examenes_List",
-      "params": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+      {
+        "v": "17",
+        "name": "Examenes_Post",
+        "method": "POST",
+        "endpoint": "http://127.0.0.1:8000/api/examenes/",
+        "params": [],
+        "headers": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "headers": [],
-      "method": "GET",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
-      },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": ""
-      },
-      "requestVariables": [],
-      "responses": {}
-    },
-    {
-      "v": "17",
-      "endpoint": "http://127.0.0.1:8000/api/examenes/1",
-      "name": "Examenes_Delete",
-      "params": [
-        {
-          "active": true,
-          "key": "Accept",
-          "value": "application/json",
-          "description": ""
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n    \"tema\": \"Examen Final de Matemáticas\",\n    \"nota\": 8.5,\n    \"dia_examen\": \"2024-06-15 10:00:00\",\n    \"aprobado\": true,\n    \"nombre_alumno\": \"Alumno Ejemplo\",\n    \"asignatura\": \"Matemáticas\",\n    \"duracion_minutos\": 90\n}"
         },
-        {
-          "active": true,
-          "key": "Content-Type",
-          "value": "application/json",
-          "description": ""
-        }
-      ],
-      "headers": [],
-      "method": "DELETE",
-      "auth": {
-        "authType": "inherit",
-        "authActive": true
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "preRequestScript": "",
-      "testScript": "",
-      "body": {
-        "contentType": "application/json",
-        "body": ""
+      {
+        "v": "17",
+        "name": "Examenes_List",
+        "method": "GET",
+        "endpoint": "http://127.0.0.1:8000/api/examenes",
+        "params": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
       },
-      "requestVariables": [],
-      "responses": {}
-    }
-  ],
-  "headers": [],
-  "auth": {
-    "authType": "none",
-    "authActive": true
-  },
-  "variables": [],
-  "description": ""
-}
+      {
+        "v": "17",
+        "name": "Examenes_Put",
+        "method": "PUT",
+        "endpoint": "http://127.0.0.1:8000/api/examenes/2",
+        "params": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"tema\": \"Recuperación de Matemáticas\",\n  \"dia_examen\": \"2026-06-20 10:00:00\",\n  \"nota\": 9.0,\n  \"aprobado\": true\n}"
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      },
+      {
+        "v": "17",
+        "name": "Examenes_Delete",
+        "method": "DELETE",
+        "endpoint": "http://127.0.0.1:8000/api/examenes/1",
+        "params": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "active": true,
+            "description": ""
+          }
+        ],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        },
+        "requestVariables": [],
+        "responses": {},
+        "description": null
+      }
+    ],
+    "auth": {
+      "authType": "none",
+      "authActive": true
+    },
+    "headers": [],
+    "variables": [],
+    "description": ""
+  }
+]

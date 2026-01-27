@@ -1,12 +1,12 @@
-# API RESTful de Gestión de Cursos - Laravel + Sanctum
+# ExamenProject - API de Gestión de Exámenes (Laravel + Sanctum)
 
-Sistema completo de API RESTful segura para la gestión de cursos, con autenticación basada en tokens, roles de usuario y operaciones CRUD, construido con **Laravel 11/12** y **Laravel Sanctum**, siguiendo estrictas prácticas de seguridad y arquitectura moderna.
+Sistema completo de API RESTful segura para la gestión de exámenes, con autenticación basada en tokens, roles de usuario y operaciones CRUD, construido con **Laravel 11/12** y **Laravel Sanctum**, siguiendo estrictas prácticas de seguridad y arquitectura moderna.
 
 ![API Diagram](https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg)
 
 ## Descripción
 
-Esta aplicación implementa un backend robusto para un sistema educativo. Permite a los administradores gestionar el ciclo de vida de **Alumnos, Profesores, Asignaturas y Exámenes**, mientras que los usuarios autenticados pueden consultar información y gestionar su propio perfil de forma segura.
+Esta aplicación implementa un backend robusto para un sistema educativo. Permite a los administradores gestionar el ciclo de vida de **Exámenes**, mientras que los usuarios autenticados pueden consultar información y gestionar su propio perfil de forma segura.
 
 ---
 
@@ -50,70 +50,39 @@ api-cursos/
 │   │   ├── Controllers/           # Lógica de Negocio
 │   │   │   ├── Api/
 │   │   │   │   ├── AuthController.php      # Login, Registro, Perfil
-│   │   │   │   ├── AlumnoController.php    # CRUD Alumnos
-│   │   │   │   ├── ProfesorController.php  # CRUD Profesores
-│   │   │   │   ├── ExamenController.php    # CRUD Exámenes
-│   │   │   │   └── AsignaturaController.php# CRUD Asignaturas
+│   │   │   │   └── ExamenController.php    # CRUD Exámenes
 │   │   └── Middleware/            # Filtros de Seguridad (Sanctum)
 │   ├── Providers/
-│   │   └── AppServiceProvider.php # Configuración Global (Rate Limiter Fix)
+│   │   └── AppServiceProvider.php # Configuración Global (Rate Limiter)
 │   │
 │   └── Models/                    # ORM Eloquent
 │       ├── User.php               # Usuarios del sistema
-│       ├── Alumno.php             # Entidad Académica
-│       ├── Examen.php             # Entidad Académica (con relaciones)
-│       └── ...
+│       └── Examen.php             # Entidad Académica Principal
 │
 ├── database/                      # Estructura de Datos
 │   ├── migrations/                # Definición de tablas
 │   └── seeders/                   # Datos de prueba
 │       ├── DatabaseSeeder.php     # Orquestador principal
-│       ├── UserSeeder.php         # Admin por defecto
-│       ├── AlumnoSeeder.php       # Datos falsos de Alumnos
-│       ├── ProfesorSeeder.php     # Datos falsos de Profesores
-│       └── AsignaturaSeeder.php   # Datos falsos de Asignaturas
+│       ├── ExamenSeeder.php       # Datos de exámenes
+│       └── UserSeeder.php         # Admin por defecto
 │
 ├── routes/
 │   └── api.php                    # Definición de Endpoints Seguros
 │
-├── hoppscotch_export/             # 🧪 Colección de Pruebas
-│   └── Prueba.json                # Archivo para importar en Hoppscotch
-│
-└── public/
-    └── test_api.html              # Cliente web ligero para pruebas
+└── hoppscotch_export/             # Colección de Pruebas
+    └── Prueba.json                # Archivo para importar en Hoppscotch
 ```
 
 ### Flujo de la Aplicación
 
-```
-┌─────────────────────────────┐
-│      Petición HTTP          │
-│  (Postman / Frontend / App) │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│      routes/api.php         │
-│    (Enrutamiento Seguro)    │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐       ┌────────────────────────┐
-│   Middleware y Seguridad    │ ◀──── │   Base de Datos        │
-│ (Sanctum + Rate Limiter)    │       │ (personal_access_tokens)│
-└──────────────┬──────────────┘       └────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│       Controladores         │
-│   (Validación y Lógica)     │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐       ┌────────────────────────┐
-│      Modelos (Eloquent)     │ ◀───▶ │   Base de Datos        │
-│     (Acceso a Datos)        │       │      (MySQL)           │
-└─────────────────────────────┘       └────────────────────────┘
+```mermaid
+graph TD;
+    Client["Cliente (Postman/Hoppscotch)"] -->|JSON| Router["routes/api.php"];
+    Router -->|Auth Sanctum| Middleware["Middleware de Seguridad"];
+    Middleware -->|Request Validado| Controller["ExamenController"];
+    Controller -->|Eloquent| Model["Modelo Examen"];
+    Model <-->|SQL| DB[("Base de Datos MySQL")];
+    Controller -->|Response JSON| Client;
 ```
 
 ---
@@ -137,8 +106,9 @@ Todos los datos entrantes son validados antes de procesarse para asegurar integr
 **Archivo:** `app/Http/Controllers/Api/ExamenController.php`
 ```php
 $validator = Validator::make($request->all(), [
-    'dia_examen' => 'required|date_format:Y-m-d',
+    'dia_examen' => 'required|date_format:Y-m-d H:i:s',
     'tema' => 'required|string|max:255',
+    'nombre_alumno' => 'required|string|max:255',
     'nota' => 'nullable|numeric|min:0|max:10' // Validación de rango
 ]);
 ```
@@ -154,15 +124,9 @@ public function updateProfile(Request $request) {
 }
 ```
 
-### 4. Relaciones Protegidas (Integridad Referencial)
-Uso de claves foráneas y restricciones en base de datos para evitar datos huérfanos.
 
-**Archivo:** `database/migrations/...create_examens_table.php`
-```php
-$table->foreignId('alumno_id')->constrained()->onDelete('cascade');
-```
 
-### 5. Protección contra Fuerza Bruta (Rate Limiting)
+### 4. Protección contra Fuerza Bruta (Rate Limiting)
 Limitación de peticiones por minuto para prevenir ataques de denegación de servicio (DoS). Implementado globalmente para la API.
 
 **Archivo:** `app/Providers/AppServiceProvider.php`
@@ -184,7 +148,7 @@ Para verificar el funcionamiento de la API, se recomienda utilizar herramientas 
 3.  **Copia el Token** de la respuesta.
 4.  **Otras peticiones**: En la pestaña *Authorization*, selecciona **Bearer Token** y pega el token copiado.
 
-### OPCIÓN 2: Hoppscotch (Web) - ¡Método Fácil! ✨
+### OPCIÓN 2: Hoppscotch (Web) - ¡Método Fácil!
 
 Hemos incluido una colección configurada para que no tengas que escribir nada.
 
@@ -193,7 +157,12 @@ Hemos incluido una colección configurada para que no tengas que escribir nada.
 2.  Instala la extensión del navegador (necesaria para `localhost`).
 3.  Clic en **Colecciones** (Icono carpeta) > **Importar** > **Desde archivo JSON**.
 4.  Selecciona el archivo: `hoppscotch_export/Prueba.json`.
-5.  ¡Listo! Ya tienes todas las peticiones (Login con `device_name`, Headers, CRUD...) configuradas.
+5.  **Pasos para el Token**:
+    *   Ejecuta la petición **1. Login**.
+    *   Copia el `token` que sale en la respuesta.
+    *   Ve a la petición **GET User**.
+    *   Pestaña **Authorization** > Pega el token donde dice `<TOKEN_AQUI>`, borra la palabra `<TOKEN_AQUI>` y pega el token.
+6. El resto de peticiones ya vienen configuradas con el token, solo tienes que ejecutar las peticiones.
 
 #### B. Manual
 Si prefieres hacerlo a mano, recuerda estos **3 puntos clave** para que no falle:
@@ -244,7 +213,6 @@ Al ejecutar los seeders, se crea el siguiente usuario por defecto en `database/s
 | **Sanctum**    | Latest  | Autenticación de API     |
 | **MariaDB**    | 10.x    | Base de Datos Relacional |
 | **phpMyAdmin** | -       | Gestión de Base de Datos |
-| **Postman**    | -       | Herramienta de Testing   |
 | **Hoppscotch** | -       | Herramienta de Testing   |
 
 ---
