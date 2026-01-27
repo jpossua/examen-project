@@ -12,8 +12,6 @@ Esta aplicación implementa un backend robusto para un sistema educativo. Permit
 
 ## Capturas de Pantalla
 
-*(Espacio reservado para tus capturas de Postman o de la Web de Prueba)*
-
 ### 1. Login y Obtención de Token
 Autenticación segura devolviendo token Bearer.
 ![Login Page](imgReadme/login_screenshot.png)
