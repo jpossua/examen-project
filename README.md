@@ -154,7 +154,7 @@ Hemos incluido una colección configurada para que no tengas que escribir nada.
 
 #### A. Importar (Rápido)
 1.  Ve a [Hoppscotch.io](https://hoppscotch.io/).
-2.  Instala la extensión del navegador (necesaria para `localhost`).
+2.  Instala la [extensión del navegador](https://chromewebstore.google.com/detail/amknoiejhlmhancpahfcfcfhllgkpbld?utm_source=item-share-cb) (necesaria para `localhost`).
 3.  Clic en **Colecciones** (Icono carpeta) > **Importar** > **Desde archivo JSON**.
 4.  Selecciona el archivo: `hoppscotch_export/Prueba.json`.
 5.  **Pasos para el Token**:
