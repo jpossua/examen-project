@@ -42,7 +42,7 @@ Operaciones completas de gestión académica (Puede probarse con Postman o Hopps
 El proyecto sigue la arquitectura estándar de **Laravel**, separando claramente rutas, controladores y modelos:
 
 ```
-api-cursos/
+examen-project/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/           # Lógica de Negocio
@@ -104,10 +104,13 @@ Todos los datos entrantes son validados antes de procesarse para asegurar integr
 **Archivo:** `app/Http/Controllers/Api/ExamenController.php`
 ```php
 $validator = Validator::make($request->all(), [
-    'dia_examen' => 'required|date_format:Y-m-d H:i:s',
+    'dia_examen' => 'required|date',
     'tema' => 'required|string|max:255',
+    'aprobado' => 'required|boolean',
     'nombre_alumno' => 'required|string|max:255',
-    'nota' => 'nullable|numeric|min:0|max:10' // Validación de rango
+    'asignatura' => 'required|string|max:255',
+    'duracion_minutos' => 'required|integer|min:1',
+    'nota' => 'nullable|numeric|min:0|max:10'
 ]);
 ```
 

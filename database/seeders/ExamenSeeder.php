@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * ============================================
+ * SEEDER DE EXÁMENES (ExamenSeeder)
+ * ============================================
+ * 
+ * Este seeder puebla la tabla 'examenes' con datos de prueba.
+ * Crea varios registros con diferentes estados (aprobado/reprobado).
+ */
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -10,11 +19,13 @@ use Carbon\Carbon;
 class ExamenSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecuta el seeder de exámenes.
      */
     public function run(): void
     {
-        // Ejemplo 1: Examen aprobado de Programación
+        // ============================================
+        // CASO 1: EXAMEN APROBADO
+        // ============================================
         Examen::create([
             'dia_examen' => Carbon::parse('2026-06-23 10:00:00'), // Tipo: DateTime
             'tema' => 'Programación Orientada a Objetos',         // Tipo: String
@@ -25,7 +36,9 @@ class ExamenSeeder extends Seeder
             'duracion_minutos' => 90,                             // Tipo: Integer
         ]);
 
-        // Ejemplo 2: Examen suspenso de Matemáticas
+        // ============================================
+        // CASO 2: EXAMEN REPROBADO
+        // ============================================
         Examen::create([
             'dia_examen' => Carbon::parse('2026-06-25 09:30:00'),
             'tema' => 'Cálculo Diferencial',
@@ -36,7 +49,9 @@ class ExamenSeeder extends Seeder
             'duracion_minutos' => 120,
         ]);
 
-        // Ejemplo 3: Examen perfecto de Base de Datos
+        // ============================================
+        // CASO 3: EXAMEN SOBRESALIENTE
+        // ============================================
         Examen::create([
             'dia_examen' => Carbon::parse('2026-07-01 11:00:00'),
             'tema' => 'Diseño de Bases de Datos Relacionales',

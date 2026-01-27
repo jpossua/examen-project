@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * ============================================
+ * MODELO DE USUARIO (User)
+ * ============================================
+ * 
+ * Este modelo representa a los usuarios autenticados del sistema.
+ * Utiliza Laravel Sanctum para la gestión de tokens API.
+ * 
+ * Capacidades:
+ * - Autenticación estándar de Laravel
+ * - Notificaciones por correo
+ * - Tokens de API (Sanctum)
+ */
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -14,7 +28,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que se pueden asignar masivamente.
      *
      * @var list<string>
      */
@@ -25,7 +39,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ocultarse para la serialización.
      *
      * @var list<string>
      */
@@ -35,7 +49,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Obtiene los atributos que deben ser convertidos.
      *
      * @return array<string, string>
      */
