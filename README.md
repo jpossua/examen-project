@@ -91,6 +91,7 @@ graph TD;
 Uso de tokens para asegurar la comunicación sin estado (Stateless). Cada petición debe incluir el cabezal `Authorization: Bearer <token>`.
 
 **Archivo:** `routes/api.php`
+> <sub>php</sub>
 ```php
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('examenes', ExamenController::class);
@@ -102,6 +103,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Todos los datos entrantes son validados antes de procesarse para asegurar integridad y evitar inyecciones.
 
 **Archivo:** `app/Http/Controllers/Api/ExamenController.php`
+> <sub>php</sub>
 ```php
 $validator = Validator::make($request->all(), [
     'dia_examen' => 'required|date',
@@ -118,6 +120,7 @@ $validator = Validator::make($request->all(), [
 Los usuarios solo pueden modificar su propio perfil. La lógica impide modificar datos de otros IDs.
 
 **Archivo:** `app/Http/Controllers/Api/AuthController.php`
+> <sub>php</sub>
 ```php
 public function updateProfile(Request $request) {
     $user = $request->user(); // Obtiene el usuario DEL TOKEN, no por ID en URL
@@ -131,6 +134,7 @@ public function updateProfile(Request $request) {
 Limitación de peticiones por minuto para prevenir ataques de denegación de servicio (DoS). Implementado globalmente para la API.
 
 **Archivo:** `app/Providers/AppServiceProvider.php`
+> <sub>php</sub>
 ```php
 RateLimiter::for('api', function (Request $request) {
     return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
@@ -181,6 +185,7 @@ Si prefieres hacerlo a mano, recuerda estos **3 puntos clave** para que no falle
 *   Servidor MySQL/MariaDB.
 
 ### 2. Instalación
+> <sub>bash</sub>
 ```bash
 # 1. Instalar dependencias
 composer install
