@@ -180,7 +180,7 @@ Si prefieres hacerlo a mano, recuerda estos **3 puntos clave** para que no falle
 
 ---
 ### 1. Requisitos
-*   PHP 8.2 o superior.
+*   PHP 8.4 o superior.
 *   Composer.
 *   Servidor MySQL/MariaDB.
 
@@ -214,10 +214,10 @@ Al ejecutar los seeders, se crea el siguiente usuario por defecto en `database/s
 
 | Tecnología     | Versión | Uso                      |
 | :------------- | :------ | :----------------------- |
-| **Laravel**    | 11.x    | Framework Backend        |
-| **PHP**        | 8.2+    | Lenguaje del Servidor    |
+| **Laravel**    | 12.x    | Framework Backend        |
+| **PHP**        | 8.4+    | Lenguaje del Servidor    |
 | **Sanctum**    | Latest  | Autenticación de API     |
-| **MariaDB**    | 10.x    | Base de Datos Relacional |
+| **MariaDB**    | 11.x    | Base de Datos Relacional |
 | **phpMyAdmin** | -       | Gestión de Base de Datos |
 | **Hoppscotch** | -       | Herramienta de Testing   |
 
